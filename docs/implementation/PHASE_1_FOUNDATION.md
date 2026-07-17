@@ -16,9 +16,9 @@ implementar Payment Core o frontends funcionales.
 
 | ID | Entregable | Repositorio | Estado |
 | --- | --- | --- | --- |
-| E1.1 | Toolchain de contratos y reglas de lint | nexopay-contracts | IN_PROGRESS |
-| E1.2 | Schemas comunes de IDs, dinero, errores y tenant | nexopay-contracts | NOT_STARTED |
-| E1.3 | OpenAPI de billing, checkout sessions y payment intents | nexopay-contracts | NOT_STARTED |
+| E1.1 | Toolchain de contratos y reglas de lint | nexopay-contracts | DONE |
+| E1.2 | Schemas comunes de IDs, dinero, errores y tenant | nexopay-contracts | DONE |
+| E1.3 | OpenAPI de billing, checkout sessions y payment intents | nexopay-contracts | IN_PROGRESS |
 | E1.4 | AsyncAPI y envelope comun de eventos | nexopay-contracts | NOT_STARTED |
 | E1.5 | Docker Compose local y servicios de apoyo | nexopay-platform-infrastructure | NOT_STARTED |
 | E1.6 | Pipeline Jenkins real para contratos | nexopay-contracts | NOT_STARTED |
@@ -64,5 +64,19 @@ implementar Payment Core o frontends funcionales.
 
 ## Siguiente accion
 
-Implementar E1.1 y E1.2 en `nexopay-contracts`, activar su Jenkinsfile y
-publicar el primer artefacto de documentacion reproducible.
+Implementar E1.3 en `nexopay-contracts`: comenzar por billing batch/online y
+continuar con checkout sessions y payment intents sobre los schemas comunes.
+
+## Evidencia
+
+### E1.1 y E1.2
+
+- Commit: [`595d921`](https://github.com/7yrak/nexopay-contracts/commit/595d921).
+- Node.js 24 y pnpm 11.13.1 fijados.
+- Cinco schemas JSON Schema 2020-12 y cuatro ejemplos sinteticos.
+- Cinco pruebas automatizadas exitosas.
+- Lint, validacion de referencias y build reproducible exitosos.
+- Artefacto con manifiesto SHA-256 generado.
+- Auditoria de dependencias sin vulnerabilidades conocidas.
+- Dependencias reducidas de 1.417 a 168 al reemplazar AsyncAPI CLI por parser.
+- Scripts transitivos no autorizados permanecen bloqueados por politica pnpm.

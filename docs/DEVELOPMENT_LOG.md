@@ -3,6 +3,50 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Etapa 1: toolchain y schemas comunes
+
+### Decisiones
+
+- Node.js 24 y pnpm 11.13.1 forman el toolchain inicial de contratos.
+- Los schemas usan JSON Schema 2020-12 e IDs canonicos bajo
+  `https://schemas.nexopay.cl`.
+- Montos se representan con `amountMinor` entero y `currency`; v1 permite CLP.
+- IDs externos son opacos, prefijados y respaldados por ULID.
+- Errores se basan en Problem Details e incluyen correlation ID obligatorio.
+- Se usa `@asyncapi/parser` en vez de `@asyncapi/cli` para reducir supply chain.
+
+### Trabajo completado
+
+- E1.1 Toolchain de contratos: `DONE`.
+- E1.2 Schemas comunes: `DONE`.
+- Jenkinsfile activado con Corepack y lockfile congelado.
+- Scripts de lint, validacion, ejemplos y build reproducible.
+- Schemas de entity ID, money, tenant context, resource metadata y problem.
+- Manifiesto de artefacto con SHA-256.
+
+### Validaciones
+
+- Commit `nexopay-contracts`: `595d921`.
+- Cinco schemas y cuatro ejemplos validados.
+- Cinco pruebas automatizadas pasan.
+- Auditoria de dependencias: sin vulnerabilidades conocidas.
+- Peer dependencies: sin conflictos.
+- Footprint limpio: 168 paquetes y 69 MiB.
+- Script de telemetria transitivo `@scarf/scarf` denegado explicitamente.
+
+### Riesgos abiertos
+
+- OpenAPI y AsyncAPI aun no existen; sus validadores omiten correctamente hasta
+  que E1.3/E1.4 agreguen contratos.
+- El dominio `schemas.nexopay.cl` aun no esta publicado; los IDs son canonicos y
+  se resuelven localmente durante esta etapa.
+- Breaking-change detection se activara cuando exista una version base publicada.
+
+### Siguiente paso
+
+Implementar E1.3: OpenAPI de carga/consulta de deuda, checkout sessions y
+payment intents usando los schemas comunes.
+
 ## 2026-07-16 - Transicion a etapa 1 con entorno local
 
 ### Decisiones
