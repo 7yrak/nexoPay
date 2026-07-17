@@ -97,16 +97,18 @@ pull requests. No se usara `latest` en imagenes desplegables.
 ## Documentacion
 
 - [Arquitectura](docs/ARCHITECTURE.md)
+- [Plan de desarrollo](docs/DEVELOPMENT_PLAN.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
 - [Decisiones de arquitectura](docs/adr/README.md)
 
 ## Estado actual
 
-La arquitectura inicial y los limites de repositorios estan definidos. Los
-repositorios de componentes contienen documentacion tecnica y pipelines base,
-pero aun no incluyen implementacion funcional.
+La arquitectura inicial, los limites de repositorios y el plan de desarrollo
+por etapas estan definidos. Los repositorios de componentes contienen
+documentacion tecnica y pipelines base, pero aun no incluyen implementacion
+funcional.
 
-El siguiente hito es definir los contratos minimos de `checkout-session`,
-`payment-intent`, consulta de deuda y eventos de pago, seguido por un vertical
-slice ejecutable en entorno local.
+La etapa 0 esta en curso. El siguiente hito es cerrar pais, rol regulatorio,
+proveedores, capacidad y SLO para comenzar contratos y entorno local en la
+etapa 1.

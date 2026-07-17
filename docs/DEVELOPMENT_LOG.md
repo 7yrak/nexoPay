@@ -3,6 +3,49 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Plan de desarrollo por etapas
+
+### Decisiones
+
+- Se adopta `docs/DEVELOPMENT_PLAN.md` como fuente de verdad del roadmap.
+- La bitacora sera append-only y registrara evidencia de cada avance.
+- Las etapas usan estados `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
+- Una etapa solo pasa a `DONE` cuando cumple todos sus criterios de salida.
+- El primer objetivo de entrega es una Alpha interna completa con fake biller y
+  fake PSP; proveedores reales se incorporan despues de validar el nucleo.
+
+### Trabajo completado
+
+- Definicion de diez etapas desde descubrimiento hasta piloto productivo.
+- Identificacion de dependencias, repositorios, entregables y criterios de
+  salida por etapa.
+- Definicion de Alpha interna, Beta controlada, candidato a piloto y piloto.
+- Definicion de Definition of Ready, Definition of Done y protocolo de
+  seguimiento.
+
+### Estado de etapas
+
+- Etapa 0 - Definicion de producto, regulacion y capacidad: `IN_PROGRESS`.
+- Etapas 1 a 9: `NOT_STARTED`.
+
+### Validaciones
+
+- El plan respeta los limites de repositorios definidos en la arquitectura.
+- La ruta critica comienza por decisiones que afectan regulacion, seguridad,
+  contratos y capacidad antes de implementar pagos reales.
+- Gestion y facturacion pueden avanzar en paralelo despues del nucleo.
+
+### Riesgos abiertos
+
+- La duracion depende del equipo definitivo y tiempos de certificacion externa.
+- Aun faltan pais, rol regulatorio, PSP, facturador piloto, cloud, SLO y alcance
+  PCI confirmados.
+
+### Siguiente paso
+
+Resolver el backlog inmediato de la etapa 0 y registrar cada decision como ADR
+o entrada de bitacora con su evidencia.
+
 ## 2026-07-16 - Fundacion de la plataforma
 
 ### Decisiones
