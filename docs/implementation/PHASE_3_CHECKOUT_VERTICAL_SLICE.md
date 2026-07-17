@@ -126,8 +126,12 @@ ID opaco de sesion y el origen publico de Checkout Web.
   [`035c2e2`](https://github.com/7yrak/nexopay-platform-infrastructure/commit/035c2e2).
 - `make up-stage3`: siete servicios seleccionados saludables; portal en
   `localhost:3000`, Checkout Web en `localhost:3001` y SDK en `localhost:3002`.
-- Las ejecuciones E2E finales acumularon 4 pagos `CAPTURED`, 4 comprobantes y 0
-  de 4 transacciones de ledger desbalanceadas.
+- La ejecucion E2E posterior a CI produjo 2 pagos `CAPTURED`, 2 comprobantes y
+  0 de 2 transacciones de ledger desbalanceadas.
+- Jenkins `nexopay-contracts-local #5`: `SUCCESS`, 15 pruebas, 22 schemas, 13
+  ejemplos, compatibilidad y 41 artefactos construidos.
+- Jenkins `nexopay-payments-platform-local #5`: `SUCCESS`, 22 pruebas contra
+  el tag exacto `contracts-v1-alpha.3` y JAR archivado con fingerprint.
 - Jenkins `nexopay-checkout-sdk-local #1`: `SUCCESS`, 8 pruebas y bundle
   archivado con fingerprint.
 - Jenkins `nexopay-checkout-web-local #1`: `SUCCESS`, 7 pruebas y artefactos

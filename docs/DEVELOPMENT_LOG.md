@@ -45,8 +45,10 @@ decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
   Jenkins #2 `SUCCESS`.
 - Playwright: 12 casos en Chrome desktop/movil, todos exitosos, incluyendo
   exito, rechazo, timeout, refresh, cierre/reingreso, inline y redirect/back.
-- Demo final: 4 pagos capturados, 4 comprobantes y 0 de 4 transacciones de
-  ledger desbalanceadas.
+- Jenkins Contracts #5 y Payments Platform #5: `SUCCESS` sobre los commits y el
+  tag `contracts-v1-alpha.3` de esta etapa.
+- Demo posterior a CI: 2 pagos capturados, 2 comprobantes y 0 de 2
+  transacciones de ledger desbalanceadas.
 - Commits publicados: contracts `f8cf639`, core `e8ff738`, SDK `31ea0da`,
   Checkout Web `f912051`, Portal `d078263` e infraestructura `035c2e2`.
 
