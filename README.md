@@ -103,6 +103,7 @@ pull requests. No se usara `latest` en imagenes desplegables.
 - [Threat model inicial](docs/discovery/THREAT_MODEL.md)
 - [Fundacion completada de la etapa 1](docs/implementation/PHASE_1_FOUNDATION.md)
 - [Nucleo transaccional completado de la etapa 2](docs/implementation/PHASE_2_TRANSACTIONAL_CORE.md)
+- [Checkout vertical slice completado de la etapa 3](docs/implementation/PHASE_3_CHECKOUT_VERTICAL_SLICE.md)
 - [Estandar de observabilidad](docs/engineering/OBSERVABILITY_STANDARD.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
@@ -110,11 +111,12 @@ pull requests. No se usara `latest` en imagenes desplegables.
 
 ## Estado actual
 
-Las etapas 0, 1 y 2 estan `DONE` para el alcance de Alpha interna sintetica.
-Existen contratos v1 versionados, infraestructura local, Jenkins real y un
-nucleo transaccional con idempotencia persistida, fake PSP, ledger de partida
-doble, outbox Kafka y observabilidad verificados. La siguiente etapa es el
-checkout vertical slice.
+Las etapas 0 a 3 estan `DONE` para el alcance de Alpha interna sintetica.
+Existen contratos v1 versionados, infraestructura local, Jenkins real, nucleo
+transaccional, Payment Portal, Checkout Web y SDK embebible. El recorrido deuda
+sintetica -> fake PSP -> ledger -> comprobante pasa en Chrome desktop/movil sin
+entregar bearer o secretos al parent. La siguiente etapa es facturacion e
+integraciones de empresas.
 
 Esto no habilita produccion: legal, PCI, privacidad, PSP, convenio ESVAL, cloud,
 capacidad, recuperacion y pentest permanecen como gates abiertos. Hasta pasarlos

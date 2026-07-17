@@ -41,7 +41,7 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 | 0 | Definicion para Alpha y gates productivos | DONE | Ninguna | Completada 2026-07-16 |
 | 1 | Fundacion de ingenieria y contratos | DONE | Etapa 0 | Completada 2026-07-16 |
 | 2 | Nucleo transaccional | DONE | Etapa 1 | Completada 2026-07-17 |
-| 3 | Checkout vertical slice | NOT_STARTED | Etapa 2 | 4-6 semanas |
+| 3 | Checkout vertical slice | DONE | Etapa 2 | Completada 2026-07-17 |
 | 4 | Facturacion e integraciones de empresas | NOT_STARTED | Etapas 1-3 | 3-6 semanas |
 | 5 | Plano de gestion | NOT_STARTED | Etapas 1-2 | 4-6 semanas |
 | 6 | Eventos, webhooks y conciliacion | NOT_STARTED | Etapas 2, 4 y 5 | 3-5 semanas |
@@ -160,6 +160,8 @@ Implementar la fuente de verdad del pago sin depender de proveedores reales.
 - Pruebas unitarias, integracion y contrato pasan en Jenkins.
 
 ## Etapa 3 - Checkout vertical slice
+
+Evidencia de cierre: [Etapa 3 - Checkout vertical slice](implementation/PHASE_3_CHECKOUT_VERTICAL_SLICE.md).
 
 ### Objetivo
 

@@ -3,6 +3,76 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-17 - Cierre de etapa 3
+
+### Decisiones
+
+- Payment Portal y Checkout Web usan BFF separados; ningun bearer de checkout
+  llega al JavaScript del portal, SDK o parent.
+- `sessionId` es el unico identificador compartido con el parent. Monto, payment
+  intent, provider token y secreto quedan fuera del contrato browser.
+- La allowlist persistida define CSP `frame-ancestors`; los origenes se comparan
+  exactamente, incluyendo diferencia entre `localhost` y `127.0.0.1`.
+- El SDK es Web Component sin dependencia runtime de React, Angular o Vue.
+- Cerrar un modal no cancela el pago; cancelar dentro del checkout si ejecuta
+  un comando idempotente canonico.
+- Chrome desktop y movil es la matriz soportada de Alpha. Ampliarla es un gate
+  posterior, no una afirmacion de compatibilidad no probada.
+
+### Trabajo completado
+
+- Contratos de acceso interno, comprobante y browser message cerrados en
+  `contracts-v1-alpha.3`.
+- Payments Platform permite consulta runtime, cancelacion, comprobante,
+  reemision BFF y bloqueo de sesiones expiradas.
+- SDK con modal, inline, redirect, iframe sandbox, postMessage validado y
+  ejemplos HTML/React/Angular/Vue.
+- Checkout Web accesible y recuperable con BFF stateless, CSP dinamica y estados
+  de fake PSP.
+- Payment Portal con referencia de piloto de agua, deuda sintetica y creacion
+  exclusivamente server-side de payment intent/sesion.
+- Compose `dev`, tres jobs Jenkins y Playwright integrados.
+
+### Validaciones
+
+- Contracts: 22 schemas, 13 ejemplos y 15 pruebas; tag
+  `contracts-v1-alpha.3` publicado.
+- Payments Platform: 7 pruebas unitarias y 15 de integracion/contrato, 22
+  totales sin fallos.
+- SDK: 8 pruebas, ejemplos tipados y bundle 6.051 bytes; Jenkins #1 `SUCCESS`.
+- Checkout Web: 7 pruebas; Jenkins #1 `SUCCESS`.
+- Payment Portal: 2 pruebas BFF, build Next y auditoria sin vulnerabilidades;
+  Jenkins #2 `SUCCESS`.
+- Playwright: 12 casos en Chrome desktop/movil, todos exitosos, incluyendo
+  exito, rechazo, timeout, refresh, cierre/reingreso, inline y redirect/back.
+- Demo final: 4 pagos capturados, 4 comprobantes y 0 de 4 transacciones de
+  ledger desbalanceadas.
+- Commits publicados: contracts `f8cf639`, core `e8ff738`, SDK `31ea0da`,
+  Checkout Web `f912051`, Portal `d078263` e infraestructura `035c2e2`.
+
+### Incidencias resueltas
+
+- El origen inicial de Playwright no coincidia con la allowlist; el rechazo
+  verifico la proteccion y la prueba se fijo al origen autorizado.
+- Portal Jenkins #1 detecto formato inestable de `next-env.d.ts`; se excluyo el
+  archivo administrado por Next y #2 paso.
+- TypeScript 7 no era compatible con el parser ESLint de Next; Portal usa 5.9.3.
+- PostCSS transitivo tenia un advisory moderado; override 8.5.10 dejo la
+  auditoria limpia.
+
+### Riesgos abiertos
+
+- PG-01 a PG-09 siguen `OPEN`; no se permiten datos, credenciales o dinero real.
+- La referencia ESVAL no implica convenio o integracion.
+- El secret compartido local requiere workload identity en cloud.
+- Firefox, WebKit, dispositivos reales, pentest, capacidad y recuperacion no se
+  han validado.
+
+### Siguiente paso
+
+Iniciar etapa 4: interfaz canonica de biller y `fake-water-biller`, manteniendo
+el adaptador ESVAL bloqueado hasta obtener convenio y especificaciones.
+
 ## 2026-07-17 - Cierre de etapa 2
 
 ### Decisiones

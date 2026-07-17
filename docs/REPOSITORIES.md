@@ -38,10 +38,10 @@ solo lectura entre esquemas tambien requiere una decision de arquitectura.
 
 ## Jenkins
 
-Cada repositorio contiene un `Jenkinsfile`. Los pipelines base detectan si el
-repositorio sigue en fase documental y omiten builds inexistentes. Al agregar
-codigo, los manifiestos y wrappers pasan a ser obligatorios y los stages se
-activan sin redisenar el pipeline.
+Cada repositorio contiene un `Jenkinsfile`. Contracts, Payments Platform,
+Checkout SDK, Checkout Web y Payment Portal tienen jobs locales ejecutados con
+resultado `SUCCESS`. Los componentes aun documentales omiten builds hasta que
+sus manifiestos y wrappers pasen a ser obligatorios.
 
 La logica comun terminara en una Jenkins Shared Library mantenida desde
 `nexopay-platform-infrastructure`; los Jenkinsfiles conservaran declaracion de
