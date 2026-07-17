@@ -3,6 +3,78 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-17 - Cierre interno de etapa 4
+
+### Decisiones
+
+- Se adopta una capa anticorrupcion canonica con capacidades explicitas; ningun
+  adaptador puede inferir reserva o reversa.
+- Payment Core conserva el snapshot versionado usado para crear el pago y
+  confirma ese mismo snapshot despues de captura.
+- Cada adaptador tiene ejecutor, timeout y circuito independientes.
+- La confirmacion directa e idempotente pertenece a Etapa 4; workers con inbox,
+  backoff y dead-letter pertenecen a Etapa 6.
+- La etapa cierra para Alpha sintetica bajo ADR 0005. El proveedor real no se
+  falsea: continua diferido por `PG-03` y bloquea Beta real.
+
+### Trabajo completado
+
+- `contracts-v1-alpha.4` con capacidades, validacion, reserva, confirmacion,
+  consulta de estado y reversa canonicas.
+- Servicio Kotlin/Spring `nexopay-billing-connectors` con PostgreSQL, health,
+  metricas, secreto Alpha y contenedor no-root.
+- Adaptadores `fake-water` y `fake-water-slow`, confirmacion inmediata/tardia,
+  reversa soportada/no soportada, circuit breaker y aislamiento de pools.
+- Payments valida deuda por HTTP, persiste IDs/versiones/montos y confirma al
+  facturador con clave derivada del pago.
+- Payment Portal consulta deuda online mediante BFF sin exponer secreto ni
+  referencia externa al browser.
+- Compose agrega base Billing, servicio, dependencias, healthchecks y job
+  Jenkins; los Dockerfiles separan la descarga de dependencias del codigo.
+
+### Validaciones
+
+- Contracts: 29 schemas, 16 ejemplos y 18 pruebas, sin breaking changes.
+- Billing: suites unitarias, contrato y PostgreSQL cubren capacidades,
+  aislamiento, replay, tardia, auditoria inmutable y reversa no soportada.
+- Payments: unitarias e integracion PostgreSQL/Kafka pasan contra Alpha 4.
+- Portal: 4 pruebas BFF y 12 Playwright pasan en escritorio/movil.
+- Runtime: consulta y validacion retornan `36378 CLP`; replay conserva un
+  intento; tardia transita `PENDING -> CONFIRMED`; slow retorna `503` y reversa
+  no soportada `422`.
+- PostgreSQL conserva snapshot `fake-water-v1`, confirmaciones auditables y
+  cero transacciones del ledger desbalanceadas.
+- Jenkins Contracts #6, Billing #1, Payments #6 y Portal #3 terminaron
+  `SUCCESS`; Billing reporto 5 pruebas y Payments 22 sin fallos.
+- La demo post-CI produjo 2 pagos capturados con snapshot canonico, 3
+  confirmaciones auditadas, `401` sin secreto y ninguna referencia de cliente
+  en logs.
+- Commits publicados: Contracts `3abb853`, Billing `9d0a3a2`, Payments
+  `76719e1`, Portal `a602a31`, Event Workers `bdd55e8` e infraestructura
+  `70d9416`.
+
+### Incidencias resueltas
+
+- Spring Boot 4 no creo `RestClient.Builder` en esta composicion; el cliente usa
+  un builder explicito y Payment Core recupero readiness.
+- PostgreSQL rechazo `Instant` sin tipo JDBC; todos los parametros temporales
+  se convierten a `Timestamp` y la prueba funcional pasa.
+- Comparar un `Instant` en memoria con uno persistido fallo por precision de
+  microsegundos; la idempotencia se verifica por identidad, estado e intentos.
+- Los builds Docker repetian Gradle y dependencias tras cambios de fuente; se
+  agrego una capa de dependencias reutilizable.
+
+### Riesgos abiertos
+
+- `PG-03` permanece `OPEN`: no existe adaptador, sandbox ni convenio ESVAL.
+- Secret compartido, entrega asincrona durable, datos reales y carga de
+  proveedor permanecen fuera del alcance Alpha.
+
+### Siguiente paso
+
+Iniciar Etapa 5, plano de gestion, manteniendo en paralelo la gestion externa
+necesaria para cerrar `PG-03`.
+
 ## 2026-07-17 - Cierre de etapa 3
 
 ### Decisiones

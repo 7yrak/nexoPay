@@ -42,7 +42,7 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 | 1 | Fundacion de ingenieria y contratos | DONE | Etapa 0 | Completada 2026-07-16 |
 | 2 | Nucleo transaccional | DONE | Etapa 1 | Completada 2026-07-17 |
 | 3 | Checkout vertical slice | DONE | Etapa 2 | Completada 2026-07-17 |
-| 4 | Facturacion e integraciones de empresas | NOT_STARTED | Etapas 1-3 | 3-6 semanas |
+| 4 | Facturacion e integraciones de empresas | DONE | Etapas 1-3 | Alpha sintetica completada 2026-07-17; sandbox real diferido PG-03 |
 | 5 | Plano de gestion | NOT_STARTED | Etapas 1-2 | 4-6 semanas |
 | 6 | Eventos, webhooks y conciliacion | NOT_STARTED | Etapas 2, 4 y 5 | 3-5 semanas |
 | 7 | PSP real, cumplimiento y seguridad | NOT_STARTED | Etapas 3 y 6 | 4-8 semanas |
@@ -192,6 +192,12 @@ simulados.
 - Alpha interna desplegada en ambiente `dev`.
 
 ## Etapa 4 - Facturacion e integraciones de empresas
+
+Evidencia de cierre interno: [Etapa 4 - Facturacion e integraciones](implementation/PHASE_4_BILLING_INTEGRATIONS.md).
+
+El estado `DONE` cubre el alcance Alpha sintetico controlable por NexoPay. No
+declara Beta real: el sandbox del primer proveedor permanece diferido y bloquea
+esa entrega mediante `PG-03`.
 
 ### Objetivo
 
