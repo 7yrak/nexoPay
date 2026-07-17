@@ -39,7 +39,7 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 | Etapa | Nombre | Estado | Dependencias | Estimacion |
 | --- | --- | --- | --- | --- |
 | 0 | Definicion de producto, regulacion y capacidad | IN_PROGRESS | Ninguna | 1-2 semanas |
-| 1 | Fundacion de ingenieria y contratos | NOT_STARTED | Etapa 0 parcial | 2-3 semanas |
+| 1 | Fundacion de ingenieria y contratos | IN_PROGRESS | Etapa 0 parcial | 2-3 semanas |
 | 2 | Nucleo transaccional | NOT_STARTED | Etapa 1 | 3-5 semanas |
 | 3 | Checkout vertical slice | NOT_STARTED | Etapa 2 | 4-6 semanas |
 | 4 | Facturacion e integraciones de empresas | NOT_STARTED | Etapas 1-3 | 3-6 semanas |
@@ -86,6 +86,8 @@ Eliminar ambiguedades que cambian el modelo financiero, legal o de seguridad.
 - ADR de identidad, cloud, tenancy y proveedores creados o calendarizados.
 
 ## Etapa 1 - Fundacion de ingenieria y contratos
+
+Ejecucion activa: [Etapa 1 - Fundacion](implementation/PHASE_1_FOUNDATION.md).
 
 ### Objetivo
 

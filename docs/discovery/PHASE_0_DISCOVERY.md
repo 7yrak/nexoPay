@@ -33,7 +33,7 @@ evidencia externa o aprobacion competente, no puede marcarse como aprobada.
 | D0.4 | Facturador piloto | VALIDATING | ESVAL con adaptador simulado hasta obtener convenio | Sponsor, API/archivos, contrato y datos de prueba |
 | D0.5 | Capacidad objetivo | APPROVED | 10M tx/dia, 2.000 TPS peak, prueba a 2x | Confirmacion del propietario de producto |
 | D0.6 | SLO y recuperacion | PROPOSED | Payments 99,95%; gestion 99,9% | Analisis de impacto y costo |
-| D0.7 | Plataforma de ejecucion | VALIDATING | Maquina local solo para desarrollo; produccion pendiente | Topologia productiva, costo y recuperacion |
+| D0.7 | Plataforma de ejecucion | APPROVED | Desarrollo local; AWS se evalua al incorporar cliente | ADR y evaluacion tecnica local |
 | D0.8 | Identidad B2B | APPROVED | Keycloak para desarrollo; produccion se reevalua | ADR, MFA y prueba de organizaciones |
 | D0.9 | PCI y tokenizacion | VALIDATING | Captura alojada y tokenizacion PSP | Revision PCI/QSA o especialista |
 | D0.10 | Retencion y residencia | OPEN | Minimizar datos y separar auditoria | Requisitos legales y operacionales |
@@ -120,7 +120,7 @@ facturas, pago mediante Khipu o Webpay y envio de comprobante.
 No se encontro documentacion publica de una API B2B de deuda o confirmacion. La
 seleccion del piloto no autoriza usar endpoints internos ni automatizar el sitio
 publico. Hasta obtener convenio, especificaciones y datos de prueba se usara un
-`fake-esval` basado en contratos sinteticos.
+`fake-water-biller` ficticio basado en contratos sinteticos.
 
 ### Estrategia de deuda propuesta
 
@@ -192,9 +192,11 @@ evaluacion tecnica esta en `LOCAL_ENVIRONMENT_ASSESSMENT.md` y concluye que es
 apta para desarrollo y demos controladas, no para produccion ni pruebas finales
 de 2.000 TPS.
 
-La topologia productiva permanece abierta. Se compararan cloud y on-premise con
-alta disponibilidad, PostgreSQL multi-zona o equivalente, Kafka, secret manager,
-KMS/HSM, WAF, proteccion DDoS y evidencia de cumplimiento.
+No existen clientes ni datos reales, por lo que todo el entorno usara identidades,
+deudas, pagos y secretos sinteticos. Cuando exista un cliente oficial se
+evaluara AWS como primera opcion productiva, con alta disponibilidad,
+PostgreSQL multi-zona, Kafka administrado o equivalente, secret manager, KMS/HSM,
+WAF, proteccion DDoS y evidencia de cumplimiento.
 
 La decision se registrara mediante ADR e incluira costo inicial, costo al peak,
 operacion, lock-in aceptado y plan de recuperacion.
@@ -240,6 +242,30 @@ forzarse una cuenta si el negocio permite pago de deuda con identificador.
 El alcance final debe ser revisado por un profesional PCI competente y por
 asesoria legal de privacidad en la jurisdiccion elegida.
 
+## Alcance habilitado para la Alpha local
+
+### Incluye
+
+- Contratos versionados de deuda, checkout, pagos y eventos.
+- Tenant y facturador ficticios con aislamiento multi-tenant desde el modelo.
+- `fake-water-biller` con carga de deuda y consulta online simulada.
+- Fake PSP con comportamientos inspirados en redirect, exito, rechazo y timeout.
+- Payment Portal, Checkout Web e integracion iframe/SDK en ambiente local.
+- Payment Core, idempotencia, ledger, outbox y webhook simulados.
+- Keycloak, PostgreSQL, Kafka y observabilidad basica en Docker Compose.
+
+### Excluye
+
+- Dinero, tarjetas, RUT o deudas reales.
+- Uso de marcas o endpoints privados como si existiera convenio.
+- Credenciales productivas de ESVAL, Webpay, Khipu u otro tercero.
+- Liquidacion, comisiones reales, contracargos y certificaciones.
+- Produccion, alta disponibilidad y compromisos de SLA.
+- Acceso publico desde Internet salvo un tunel temporal controlado para demo.
+
+Este alcance permite comenzar la etapa 1 sin cerrar las validaciones requeridas
+antes de un piloto real.
+
 ## Mapa inicial de datos
 
 | Dato | Sistema propietario | Sensibilidad | Regla inicial |
@@ -262,7 +288,8 @@ asesoria legal de privacidad en la jurisdiccion elegida.
 - [ ] PSP y facturador iniciales identificados.
 - [x] Capacidad objetivo cuantificada.
 - [ ] SLO, RTO y RPO aprobados.
-- [ ] Cloud, identidad, tenancy y retencion decididos o con ADR calendarizado.
+- [x] Plataforma local e identidad para Alpha decididas.
+- [ ] Produccion, tenancy y retencion decididos o con ADR calendarizado.
 - [ ] Threat model y mapa de datos revisados.
 - [ ] Riesgos residuales tienen responsable y fecha de revision.
 

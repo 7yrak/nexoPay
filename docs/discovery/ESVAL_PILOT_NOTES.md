@@ -46,7 +46,7 @@ limites, idempotencia y comportamiento ante indisponibilidad.
 
 Soportar ambos mediante capacidades del adaptador, sin mezclarlos hasta que el
 contrato defina la fuente autoritativa. Para desarrollo se implementara
-`fake-esval` con ambos modos y datos sinteticos.
+`fake-water-biller` con ambos modos y datos sinteticos.
 
 ## Preguntas para ESVAL
 

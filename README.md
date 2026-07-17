@@ -99,6 +99,7 @@ pull requests. No se usara `latest` en imagenes desplegables.
 - [Arquitectura](docs/ARCHITECTURE.md)
 - [Plan de desarrollo](docs/DEVELOPMENT_PLAN.md)
 - [Expediente activo de la etapa 0](docs/discovery/PHASE_0_DISCOVERY.md)
+- [Ejecucion activa de la etapa 1](docs/implementation/PHASE_1_FOUNDATION.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
 - [Decisiones de arquitectura](docs/adr/README.md)
@@ -110,6 +111,6 @@ por etapas estan definidos. Los repositorios de componentes contienen
 documentacion tecnica y pipelines base, pero aun no incluyen implementacion
 funcional.
 
-La etapa 0 esta en curso. El siguiente hito es cerrar pais, rol regulatorio,
-proveedores, capacidad y SLO para comenzar contratos y entorno local en la
-etapa 1.
+La etapa 0 continua abierta para validaciones previas a clientes reales. La
+etapa 1 ya esta en curso con contratos y entorno local basados exclusivamente en
+datos sinteticos.

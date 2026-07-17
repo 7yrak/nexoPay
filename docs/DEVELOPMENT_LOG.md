@@ -3,6 +3,44 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Transicion a etapa 1 con entorno local
+
+### Decisiones
+
+- La maquina actual se confirma como ambiente inicial mientras no existan
+  clientes oficiales.
+- Todo desarrollo y prueba usara datos, identidades, deudas y pagos sinteticos.
+- AWS se evaluara como primera opcion productiva cuando exista cliente oficial.
+- La etapa 0 permanece abierta para legal, PCI, proveedores y produccion.
+- La etapa 1 comienza en paralelo porque cuenta con las decisiones parciales
+  necesarias para una Alpha interna.
+- El simulador se llamara `fake-water-biller`; un adaptador `esval` solo se
+  creara con convenio o especificaciones autorizadas.
+
+### Trabajo completado
+
+- ADR 0004 para desarrollo local y AWS diferido.
+- Definicion de alcance incluido y excluido de la Alpha local.
+- Creacion del tablero E1.1 a E1.7 de la etapa 1.
+- Cambio de etapa 1 a `IN_PROGRESS` en el plan maestro.
+
+### Validaciones
+
+- La etapa 1 depende solo de decisiones ya aprobadas para trabajo sintetico.
+- Ningun requisito pendiente obliga a detener contratos o infraestructura local.
+- Las validaciones pendientes siguen siendo gates antes de dinero o datos reales.
+
+### Riesgos abiertos
+
+- La topologia AWS, SLO, RTO y RPO productivos siguen pendientes.
+- La maquina local no representa capacidad ni disponibilidad productiva.
+- Continuan pendientes convenio ESVAL, contratos PSP y revision legal/PCI.
+
+### Siguiente paso
+
+Implementar toolchain y schemas comunes en `nexopay-contracts`, luego levantar
+las dependencias locales minimas en `nexopay-platform-infrastructure`.
+
 ## 2026-07-16 - Etapa 0: mercado, piloto, capacidad e identidad
 
 ### Decisiones
