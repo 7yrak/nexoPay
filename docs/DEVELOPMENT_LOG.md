@@ -3,6 +3,43 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Inicio operativo de la etapa 0
+
+### Decisiones
+
+- Se abre `docs/discovery/PHASE_0_DISCOVERY.md` como expediente vigente.
+- Las decisiones usaran estados `OPEN`, `PROPOSED`, `VALIDATING` y `APPROVED`.
+- Se propone para el MVP operar como gateway/orquestador sin custodia de fondos,
+  sujeto a validacion legal en la jurisdiccion inicial.
+- Se propone dimensionar inicialmente 10 millones de pagos diarios y 2.000 TPS
+  peak, con prueba de carga a 2x, sujeto a proyeccion comercial.
+
+### Trabajo completado
+
+- Apertura del tablero D0.1 a D0.10.
+- Definicion de preguntas sobre pais, flujo de fondos, PSP y facturador piloto.
+- Creacion de escenarios iniciales de capacidad.
+- Propuesta preliminar de SLO, RTO y RPO.
+- Creacion del primer mapa de datos sensibles y checklist de cierre.
+
+### Validaciones
+
+- Ninguna propuesta fue marcada como aprobada sin evidencia.
+- La implementacion de contratos transaccionales permanece dependiente de las
+  decisiones que cambian regulacion, seguridad y flujo de fondos.
+
+### Riesgos abiertos
+
+- Jurisdiccion, moneda, rol regulatorio y proveedores no confirmados.
+- Los objetivos de capacidad y disponibilidad aun son hipotesis.
+- La estrategia PCI requiere revision profesional externa.
+
+### Siguiente paso
+
+Obtener el primer bloque de respuestas del propietario del producto y, con la
+jurisdiccion confirmada, investigar fuentes regulatorias y proveedores
+oficiales antes de aprobar D0.1 a D0.3.
+
 ## 2026-07-16 - Plan de desarrollo por etapas
 
 ### Decisiones

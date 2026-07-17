@@ -54,6 +54,8 @@ y modelos de la etapa 2.
 
 ## Etapa 0 - Definicion de producto, regulacion y capacidad
 
+Expediente activo: [Etapa 0 - Descubrimiento](discovery/PHASE_0_DISCOVERY.md).
+
 ### Objetivo
 
 Eliminar ambiguedades que cambian el modelo financiero, legal o de seguridad.

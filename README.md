@@ -98,6 +98,7 @@ pull requests. No se usara `latest` en imagenes desplegables.
 
 - [Arquitectura](docs/ARCHITECTURE.md)
 - [Plan de desarrollo](docs/DEVELOPMENT_PLAN.md)
+- [Expediente activo de la etapa 0](docs/discovery/PHASE_0_DISCOVERY.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
 - [Decisiones de arquitectura](docs/adr/README.md)
