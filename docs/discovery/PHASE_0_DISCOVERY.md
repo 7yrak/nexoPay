@@ -11,6 +11,13 @@
 Este documento contiene el estado vigente de las decisiones. La bitacora
 conserva su evolucion cronologica y los ADR formalizan decisiones aprobadas.
 
+## Evidencia de apoyo
+
+- [Evaluacion del entorno local](LOCAL_ENVIRONMENT_ASSESSMENT.md)
+- [Notas regulatorias iniciales de Chile](CHILE_REGULATORY_NOTES.md)
+- [Notas del piloto ESVAL](ESVAL_PILOT_NOTES.md)
+- [Registros de decisiones](../adr/README.md)
+
 ## Regla de decision
 
 Una decision pasa por `OPEN`, `PROPOSED`, `VALIDATING` y `APPROVED`. Si falta
@@ -20,14 +27,14 @@ evidencia externa o aprobacion competente, no puede marcarse como aprobada.
 
 | ID | Decision | Estado | Propuesta inicial | Evidencia requerida |
 | --- | --- | --- | --- | --- |
-| D0.1 | Pais y moneda inicial | OPEN | Una jurisdiccion y una moneda en MVP | Confirmacion de negocio y legal |
-| D0.2 | Rol operativo/regulatorio | PROPOSED | Gateway/orquestador sin custodia de fondos | Opinion legal en el pais inicial |
-| D0.3 | PSP/adquirente inicial | OPEN | Un proveedor primario y fake PSP | APIs, certificacion, costos y SLA |
-| D0.4 | Facturador piloto | OPEN | Una empresa o sandbox representativo | Sponsor, protocolo y datos de prueba |
-| D0.5 | Capacidad objetivo | PROPOSED | 10M tx/dia, 2.000 TPS peak, prueba a 2x | Proyeccion comercial y carga medida |
+| D0.1 | Pais y moneda inicial | APPROVED | Chile y CLP; sin multimoneda en MVP | Confirmacion del propietario de producto |
+| D0.2 | Rol operativo/regulatorio | VALIDATING | Recaudador tecnologico sin custodia ni liquidacion | Opinion legal y contratos con PSP/comercio |
+| D0.3 | PSP/adquirente inicial | VALIDATING | Evaluar Webpay Plus y Khipu; mantener fake PSP | APIs, certificacion, costos, SLA y modelo multiempresa |
+| D0.4 | Facturador piloto | VALIDATING | ESVAL con adaptador simulado hasta obtener convenio | Sponsor, API/archivos, contrato y datos de prueba |
+| D0.5 | Capacidad objetivo | APPROVED | 10M tx/dia, 2.000 TPS peak, prueba a 2x | Confirmacion del propietario de producto |
 | D0.6 | SLO y recuperacion | PROPOSED | Payments 99,95%; gestion 99,9% | Analisis de impacto y costo |
-| D0.7 | Proveedor cloud | OPEN | Servicio administrado y multi-zona | Comparacion costo, region y capacidades |
-| D0.8 | Identidad B2B | OPEN | OIDC administrado con MFA | Requisitos de tenants y operacion |
+| D0.7 | Plataforma de ejecucion | VALIDATING | Maquina local solo para desarrollo; produccion pendiente | Topologia productiva, costo y recuperacion |
+| D0.8 | Identidad B2B | APPROVED | Keycloak para desarrollo; produccion se reevalua | ADR, MFA y prueba de organizaciones |
 | D0.9 | PCI y tokenizacion | VALIDATING | Captura alojada y tokenizacion PSP | Revision PCI/QSA o especialista |
 | D0.10 | Retencion y residencia | OPEN | Minimizar datos y separar auditoria | Requisitos legales y operacionales |
 
@@ -35,6 +42,12 @@ evidencia externa o aprobacion competente, no puede marcarse como aprobada.
 eventos derivados. Esa distincion debe conservarse en capacidad y costos.
 
 ## D0.1 - Pais y moneda
+
+### Decision
+
+El MVP operara en Chile y exclusivamente en pesos chilenos (`CLP`). Pagador,
+facturador, PSP y liquidacion seran domesticos. Multimoneda y pagos
+transfronterizos quedan fuera de alcance.
 
 ### Preguntas
 
@@ -53,9 +66,14 @@ multimoneda o transfronteriza requiere una etapa posterior.
 
 ### Opcion recomendada para MVP
 
-NexoPay opera como gateway/orquestador tecnologico: inicia y coordina el pago,
-pero el adquirente o PSP regulado recibe y liquida los fondos al comercio o
-facturador. NexoPay no mantiene saldos de clientes ni cuentas de dinero.
+NexoPay opera como recaudador tecnologico y orquestador: administra deuda e
+inicia la experiencia de pago, pero el adquirente o PSP regulado recibe y
+liquida los fondos directamente al comercio o facturador. NexoPay no mantiene
+saldos, cuentas de dinero ni fondos de clientes.
+
+Esta descripcion es funcional, no una conclusion regulatoria. La clasificacion
+final depende de contratos y actividades efectivas, especialmente afiliacion,
+iniciacion y liquidacion.
 
 ### Alternativas de mayor alcance
 
@@ -76,8 +94,9 @@ licencias. No se implementaran sin decision legal y comercial explicita.
 
 ## D0.3 - PSP/adquirente
 
-La evaluacion comenzara despues de confirmar jurisdiccion. Cada candidato se
-comparara por:
+Los primeros candidatos son Webpay Plus para tarjetas y Khipu para transferencias
+bancarias. ESVAL publica actualmente ambos medios en su canal para otros
+servicios. Cada candidato se comparara por:
 
 - Medios de pago, tokenizacion, 3DS y recurring payments.
 - Idempotencia y consulta posterior a timeout.
@@ -88,11 +107,30 @@ comparara por:
 
 Se implementara siempre un fake PSP determinista antes del proveedor real.
 
+Transbank asigna codigo de comercio al cliente y exige integracion y validacion.
+Debe confirmarse si cada facturador usara sus propias credenciales y liquidacion,
+y bajo que acuerdo NexoPay operara como integrador multiempresa.
+
 ## D0.4 - Facturador piloto
 
-El primer piloto debe representar el flujo real sin ser el proveedor mas
-complejo. Debe ofrecer sponsor de negocio, documentacion, sandbox o datos
-sinteticos y una forma confiable de consultar y confirmar pagos.
+ESVAL es el facturador objetivo. Su sitio publico permite consultar y pagar por
+numero de cliente o RUT. Para otros servicios publica seleccion de una o varias
+facturas, pago mediante Khipu o Webpay y envio de comprobante.
+
+No se encontro documentacion publica de una API B2B de deuda o confirmacion. La
+seleccion del piloto no autoriza usar endpoints internos ni automatizar el sitio
+publico. Hasta obtener convenio, especificaciones y datos de prueba se usara un
+`fake-esval` basado en contratos sinteticos.
+
+### Estrategia de deuda propuesta
+
+- Online: consultar la fuente ESVAL cuando exista API con SLA adecuado.
+- Carga: aceptar archivos completos o incrementales, versionados y conciliables.
+- Hibrida: consulta online primaria y carga como contingencia solo si el
+  contrato define precedencia y vigencia.
+- En cualquier modo, el payment intent guarda un snapshot inmutable de deuda,
+  monto y version para auditoria.
+- Antes de pagar se valida vigencia; despues se confirma de manera idempotente.
 
 Capacidades a confirmar:
 
@@ -103,6 +141,12 @@ Capacidades a confirmar:
 - Archivo/API de conciliacion y ventanas operacionales.
 
 ## D0.5 - Capacidad
+
+### Decision
+
+El objetivo a tres anos es 10 millones de pagos diarios, peak de diseno de
+2.000 TPS y pruebas de plataforma a 4.000 TPS. Esto no implica que la primera
+version deba operar con infraestructura productiva de ese tamano.
 
 ### Escenarios de referencia
 
@@ -143,14 +187,34 @@ impacto comercial, arquitectura y costo.
 
 ## D0.7 - Cloud y regiones
 
-Se compararan proveedores con region adecuada para residencia y latencia,
-PostgreSQL administrado multi-zona, Kafka administrado o compatible, Kubernetes,
-secret manager, KMS, WAF, proteccion DDoS y evidencia de cumplimiento.
+El desarrollo inicial se ejecutara on-premise en la maquina Linux actual. La
+evaluacion tecnica esta en `LOCAL_ENVIRONMENT_ASSESSMENT.md` y concluye que es
+apta para desarrollo y demos controladas, no para produccion ni pruebas finales
+de 2.000 TPS.
+
+La topologia productiva permanece abierta. Se compararan cloud y on-premise con
+alta disponibilidad, PostgreSQL multi-zona o equivalente, Kafka, secret manager,
+KMS/HSM, WAF, proteccion DDoS y evidencia de cumplimiento.
 
 La decision se registrara mediante ADR e incluira costo inicial, costo al peak,
 operacion, lock-in aceptado y plan de recuperacion.
 
 ## D0.8 - Identidad B2B
+
+### Decision para desarrollo
+
+Se usara Keycloak para desarrollo local y Alpha interna. Soporta OIDC, OAuth 2.0,
+MFA, WebAuthn, identity brokering y Organizations para casos B2B. Se ejecutara
+con PostgreSQL y configuracion exportable, sin acoplar permisos de dominio a su
+base de datos.
+
+Fuente tecnica:
+
+- [Keycloak Server Administration Guide](https://www.keycloak.org/docs/latest/server_admin/index.html)
+
+La decision productiva se revisara en la etapa 7. Autohospedar identidad exige
+alta disponibilidad, parches urgentes, backups, monitoreo y runbooks; si el
+equipo operativo no puede sostenerlos se migrara a un servicio administrado.
 
 Requisitos minimos:
 
@@ -192,18 +256,20 @@ asesoria legal de privacidad en la jurisdiccion elegida.
 ## Criterios de cierre
 
 - [ ] Alcance MVP y fuera de alcance aprobados.
-- [ ] Jurisdiccion, moneda y flujo de fondos documentados.
+- [x] Jurisdiccion y moneda documentadas.
+- [x] Flujo de fondos funcional documentado.
 - [ ] Rol regulatorio y estrategia PCI revisados externamente.
 - [ ] PSP y facturador iniciales identificados.
-- [ ] Capacidad, SLO, RTO y RPO cuantificados.
+- [x] Capacidad objetivo cuantificada.
+- [ ] SLO, RTO y RPO aprobados.
 - [ ] Cloud, identidad, tenancy y retencion decididos o con ADR calendarizado.
 - [ ] Threat model y mapa de datos revisados.
 - [ ] Riesgos residuales tienen responsable y fecha de revision.
 
 ## Primer bloque de respuestas requerido
 
-1. Pais y moneda inicial.
-2. Si NexoPay recibira/custodiara fondos o solo orquestara al PSP.
-3. Tipo de primera empresa piloto: servicio basico, retail u otro.
-4. Volumen esperado al inicio y en tres anos, si existe una estimacion.
-5. Preferencia o restriccion de cloud e identidad, si ya existe.
+1. Confirmar si existe contacto o convenio con ESVAL.
+2. Confirmar si ESVAL entregara deuda por archivo, API o ambos.
+3. Definir quien contrata Webpay/Khipu y es titular de cada credencial.
+4. Aprobar o ajustar la propuesta de SLO, RTO y RPO.
+5. Definir volumen de lanzamiento, separado del objetivo a tres anos.

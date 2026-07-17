@@ -3,6 +3,53 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Etapa 0: mercado, piloto, capacidad e identidad
+
+### Decisiones
+
+- Chile y CLP quedan aprobados como unico mercado y moneda del MVP.
+- NexoPay administrara deuda y orquestara pagos sin custodiar ni liquidar fondos;
+  el modelo queda en validacion legal y contractual.
+- ESVAL queda seleccionado como facturador piloto objetivo, pendiente de convenio
+  y acceso tecnico.
+- Se aprueba como objetivo a tres anos 10 millones de pagos diarios, 2.000 TPS
+  peak y prueba de plataforma a 4.000 TPS.
+- La maquina Linux actual sera solo entorno de desarrollo, no produccion.
+- Keycloak queda aprobado para desarrollo y Alpha interna; su uso productivo se
+  reevalua antes del piloto.
+
+### Trabajo completado
+
+- Inventario de CPU, memoria, discos, Docker, Java, Node y herramientas locales.
+- Evaluacion de aptitud y limites de la maquina on-premise.
+- Revision preliminar de fuentes oficiales del BCCh, CMF y legislacion de datos.
+- Revision del flujo publico ESVAL y sus medios Webpay/Khipu.
+- Definicion de estrategias de deuda por carga, online e hibrida.
+- Creacion de ADR para mercado, flujo sin custodia e identidad local.
+
+### Validaciones
+
+- La maquina tiene 8 CPU logicos, 13 GiB RAM, NVMe con espacio suficiente y
+  Docker operativo: apta para desarrollo con perfiles limitados.
+- No es apta para produccion, alta disponibilidad ni certificar 2.000 TPS.
+- ESVAL publica consulta/pago por numero de cliente o RUT y un flujo de otras
+  facturas con Khipu/Webpay, pero no se encontro API B2B publica.
+- Keycloak soporta OIDC, MFA, WebAuthn, identity brokering y Organizations B2B.
+
+### Riesgos abiertos
+
+- Falta opinion legal chilena sobre el modelo contractual efectivo.
+- Falta contacto, convenio, API/archivos y sandbox de ESVAL.
+- Falta confirmar quien contrata y posee credenciales Webpay/Khipu.
+- Produccion, SLO, RTO, RPO y retencion siguen sin aprobarse.
+- La Ley 21.719 entra en vigencia el 1 de diciembre de 2026 y debe incorporarse
+  desde el diseno.
+
+### Siguiente paso
+
+Confirmar relacion y mecanismo tecnico con ESVAL, evaluar Webpay/Khipu como
+integrador multiempresa y aprobar SLO/RTO/RPO y volumen de lanzamiento.
+
 ## 2026-07-16 - Inicio operativo de la etapa 0
 
 ### Decisiones
