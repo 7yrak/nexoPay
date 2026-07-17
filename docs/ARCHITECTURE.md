@@ -31,6 +31,35 @@ Billing Connectors encapsula protocolos y modelos particulares de empresas de
 servicios. Payments Platform encapsula por separado los conectores de PSP y
 adquirentes, porque sus estados forman parte de la maquina de pagos.
 
+## Nucleo transaccional implementado
+
+La etapa 2 materializa Payments Platform como un monolito modular Kotlin/Spring.
+La separacion interna mantiene API, pago, checkout, proveedor, ledger, outbox e
+idempotencia como limites explicitos sin introducir coordinacion distribuida.
+
+```mermaid
+flowchart LR
+    API[Checkout API] --> DB[(PostgreSQL)]
+    API --> PSP[Fake PSP]
+    PSP --> API
+    REC[Reconciliation Worker] --> PSP
+    REC --> DB
+    DB --> OUT[Outbox Dispatcher]
+    OUT --> K[(Kafka)]
+    K --> CON[Consumidores idempotentes]
+```
+
+PostgreSQL es la fuente de verdad de payment intents, sesiones, intentos de
+proveedor, idempotencia, ledger y outbox. El dispatcher publica a Kafka al menos
+una vez; los consumidores deduplican por `eventId`. Redis no participa en las
+decisiones canonicas.
+
+La confirmacion registra primero `PROCESSING` y el intento de proveedor, invoca
+el adaptador fuera de la transaccion y luego persiste el resultado. Un resultado
+ambiguo queda `UNKNOWN` y se reconcilia; nunca se traduce automaticamente en
+rechazo. En una captura, pago, dos asientos balanceados y evento outbox quedan
+en una sola transaccion PostgreSQL.
+
 ## Flujo de checkout embebido
 
 1. El backend del comercio crea una sesion mediante Checkout API.
@@ -49,6 +78,8 @@ adquirentes, porque sus estados forman parte de la maquina de pagos.
 - Integraciones externas: estados intermedios y reconciliacion; un timeout no
   equivale a rechazo.
 - Ledger: movimientos append-only y correcciones compensatorias.
+- Contabilidad: el ledger registra cuentas operacionales por cobrar y por pagar;
+  no representa fondos custodiados por NexoPay.
 
 ## Escalabilidad
 

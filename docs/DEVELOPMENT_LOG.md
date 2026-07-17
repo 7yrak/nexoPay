@@ -3,6 +3,76 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-17 - Cierre de etapa 2
+
+### Decisiones
+
+- Payments Platform se implementa como monolito modular Kotlin/Spring; no se
+  crean microservicios sin una necesidad medida.
+- PostgreSQL es fuente de verdad para pagos, intentos, idempotencia, ledger y
+  outbox. Kafka distribuye eventos y Redis no decide estado financiero.
+- El ledger es operacional, append-only y de partida doble; no representa
+  fondos recibidos o custodiados por NexoPay.
+- Una llamada al PSP ocurre fuera de la transaccion. Un timeout queda `UNKNOWN`
+  y se reconcilia, nunca se convierte automaticamente en rechazo.
+- Outbox entrega al menos una vez; cada consumidor deduplica por `eventId`.
+
+### Trabajo completado
+
+- Payment intent y checkout session v1 con identidad Alpha, token hasheado,
+  monto derivado de deuda sintetica e idempotencia persistida.
+- Maquina de estados y fake PSP determinista para exito, rechazo, timeout y
+  exito tardio.
+- Migracion Flyway tenant-aware, ledger inmutable, transactional outbox y
+  dispatcher Kafka con retry.
+- Reconciliacion de intentos `INITIATED`/`UNKNOWN` y recuperacion tras fallo.
+- Logs JSON, metricas Prometheus, trazas OpenTelemetry, readiness y Docker
+  no-root.
+- Compose y Jenkins integrados para Payments Platform.
+- ADR 0008 y expediente tecnico de la etapa creados.
+
+### Validaciones
+
+- `nexopay-payments-platform` commits `c0c655a`, `3bcfa6e` y `1f52175`
+  publicados.
+- `nexopay-platform-infrastructure` commits `212165d`, `d8ff00b` y `e2b869d`
+  publicados.
+- Dos ejecuciones locales consecutivas confirmaron que las integraciones no se
+  restauran desde cache.
+- Suite final: 7 pruebas unitarias y 12 de integracion/contrato, 19 totales y 0
+  fallos contra el tag exacto `contracts-v1-alpha.1`.
+- Jenkins `nexopay-payments-platform-local #4`: `SUCCESS` en 90 segundos, 19
+  resultados publicados y JAR archivado con fingerprint.
+- Jenkins `nexopay-contracts-local #4`: `SUCCESS`, 13 pruebas, 19 schemas, 11
+  ejemplos y 36 artefactos sin breaking changes.
+- Imagen Docker construida; Payments Platform saludable en `127.0.0.1:18081`,
+  metricas Prometheus y trazas correlacionadas visibles en Jaeger.
+
+### Incidencias resueltas
+
+- Puerto `8081` ocupado: Compose publica la aplicacion en `18081`.
+- Race entre scheduler y test de caida de Kafka: jobs separados y schedulers
+  deshabilitados explicitamente bajo el perfil de pruebas.
+- Reporte JUnit ausente en Jenkins: plugin fijado y publisher validado.
+- Integracion restaurable desde Gradle cache: cache/up-to-date deshabilitados
+  solo para `integrationTest`.
+- Alta inicial de un Job DSL posterior al escaneo de Jenkins: runner con espera
+  y un reinicio controlado cuando el job aun no existe.
+
+### Riesgos abiertos
+
+- PG-01 a PG-09 siguen `OPEN`; no se autorizan datos, credenciales ni dinero
+  real.
+- La identidad por headers y la deuda son exclusivamente sinteticas.
+- No existen PSP/facturador real, refunds, disputas o conciliacion bancaria.
+- La topologia local single-node no valida SLO, RTO, RPO, alta disponibilidad ni
+  capacidad de 2.000 TPS.
+
+### Siguiente paso
+
+Iniciar etapa 3: Checkout Web, SDK Web Component con iframe seguro, Payment
+Portal y pruebas Playwright end-to-end sobre el nucleo sintetico.
+
 ## 2026-07-16 - Cierre de etapas 0 y 1
 
 ### Decisiones

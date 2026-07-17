@@ -40,7 +40,7 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 | --- | --- | --- | --- | --- |
 | 0 | Definicion para Alpha y gates productivos | DONE | Ninguna | Completada 2026-07-16 |
 | 1 | Fundacion de ingenieria y contratos | DONE | Etapa 0 | Completada 2026-07-16 |
-| 2 | Nucleo transaccional | NOT_STARTED | Etapa 1 | 3-5 semanas |
+| 2 | Nucleo transaccional | DONE | Etapa 1 | Completada 2026-07-17 |
 | 3 | Checkout vertical slice | NOT_STARTED | Etapa 2 | 4-6 semanas |
 | 4 | Facturacion e integraciones de empresas | NOT_STARTED | Etapas 1-3 | 3-6 semanas |
 | 5 | Plano de gestion | NOT_STARTED | Etapas 1-2 | 4-6 semanas |
@@ -126,6 +126,8 @@ para validar los contratos.
   implementacion agrega contract tests contra esa baseline.
 
 ## Etapa 2 - Nucleo transaccional
+
+Evidencia de cierre: [Etapa 2 - Nucleo transaccional](implementation/PHASE_2_TRANSACTIONAL_CORE.md).
 
 ### Objetivo
 

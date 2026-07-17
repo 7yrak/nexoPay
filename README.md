@@ -102,6 +102,7 @@ pull requests. No se usara `latest` en imagenes desplegables.
 - [Gates obligatorios antes de produccion](docs/discovery/PRODUCTION_GATES.md)
 - [Threat model inicial](docs/discovery/THREAT_MODEL.md)
 - [Fundacion completada de la etapa 1](docs/implementation/PHASE_1_FOUNDATION.md)
+- [Nucleo transaccional completado de la etapa 2](docs/implementation/PHASE_2_TRANSACTIONAL_CORE.md)
 - [Estandar de observabilidad](docs/engineering/OBSERVABILITY_STANDARD.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
@@ -109,10 +110,11 @@ pull requests. No se usara `latest` en imagenes desplegables.
 
 ## Estado actual
 
-Las etapas 0 y 1 estan `DONE` para el alcance de Alpha interna sintetica. Existen
-contratos v1 versionados, deteccion de breaking changes, infraestructura local
-verificada, Jenkins real y estandar de observabilidad. La siguiente etapa es el
-nucleo transaccional.
+Las etapas 0, 1 y 2 estan `DONE` para el alcance de Alpha interna sintetica.
+Existen contratos v1 versionados, infraestructura local, Jenkins real y un
+nucleo transaccional con idempotencia persistida, fake PSP, ledger de partida
+doble, outbox Kafka y observabilidad verificados. La siguiente etapa es el
+checkout vertical slice.
 
 Esto no habilita produccion: legal, PCI, privacidad, PSP, convenio ESVAL, cloud,
 capacidad, recuperacion y pentest permanecen como gates abiertos. Hasta pasarlos

@@ -13,5 +13,6 @@ consecuencias y alternativas descartadas.
 - [ADR 0005 - Cierre Alpha separado de autorizacion productiva](0005-alpha-closure-production-gates.md)
 - [ADR 0006 - Multi-tenancy con schema compartido](0006-shared-schema-multitenancy.md)
 - [ADR 0007 - Baseline de SLO y ciclo de datos para Alpha](0007-alpha-slo-and-data-lifecycle.md)
+- [ADR 0008 - Consistencia del nucleo transaccional](0008-transactional-core-consistency.md)
 - Pendiente: proveedor y modelo de tokenizacion de pagos.
 - Pendiente: topologia productiva final en AWS.
