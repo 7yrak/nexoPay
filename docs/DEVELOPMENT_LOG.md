@@ -3,6 +3,73 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-16 - Cierre de etapas 0 y 1
+
+### Decisiones
+
+- Etapa 0 queda `DONE` exclusivamente para Alpha interna sintetica.
+- Cerrar discovery no equivale a autorizacion productiva; nueve gates externos
+  bloquean datos, credenciales o dinero real.
+- Se adopta multi-tenancy con schema compartido, `tenant_id` obligatorio,
+  constraints tenant-aware y defensa en profundidad.
+- Los SLO 99,95%/99,9%, RTO 60 min y RPO 5 min son baseline de ingenieria, no
+  compromisos contractuales.
+- La retencion Alpha es corta y descartable; la retencion real requiere revision
+  legal mediante PG-05.
+- `contracts-v1-alpha.1` es la baseline inmutable de contratos v1.
+
+### Trabajo completado
+
+- Etapa 0: alcance/fuera de alcance, threat model, mapa de datos, retencion,
+  tenancy, SLO, owners de riesgo y gates de produccion documentados.
+- Etapa 1: OpenAPI billing/checkout, AsyncAPI de estados, 19 schemas y 11
+  ejemplos sinteticos.
+- Comparador de breaking changes para JSON Schema, OpenAPI y AsyncAPI.
+- Docker Compose local con PostgreSQL, Kafka, Redis, Keycloak y Jaeger.
+- Jenkins LTS local reproducible mediante Dockerfile y Configuration as Code.
+- Estandar de logs, trazas, metricas, health checks, sampling y alertas.
+
+### Validaciones
+
+- `nexopay-contracts` commits `0c61eb2`, `7d0b24a` y `99c26bd` publicados.
+- Tag `contracts-v1-alpha.1` publicado.
+- 13 pruebas, lint OpenAPI/AsyncAPI y compatibilidad pasan localmente.
+- `nexopay-platform-infrastructure` commit `cf1e814` publicado.
+- Hardening de persistencia/logs publicado en commit `c35e4cc`.
+- `make up` y `make verify`: PostgreSQL, Kafka, Redis y Keycloak saludables.
+- Topic de pago creado con 12 particiones; Jaeger UI/OTLP accesibles.
+- Broker Kafka recreado y topic conservado; rotacion de logs inspeccionada.
+- Jenkins build `nexopay-contracts-local #3`: `SUCCESS` en 25 segundos.
+- Jenkins archivo 36 artefactos con fingerprints y confirmo ausencia de breaking
+  changes contra la baseline.
+
+### Incidencias resueltas
+
+- Puerto local `8080` ocupado: Keycloak se movio a `8180`.
+- PostgreSQL host ya usaba `5432`: NexoPay se movio a `55432`.
+- Jenkins existente usaba `8090`: controlador NexoPay se movio a `18090`.
+- Mirror Jenkins inicial no respondia: se fijo un mirror alternativo verificado.
+- Jenkins rechazo checkout local por seguridad: se habilito solo para el repo
+  hermano montado read-only y se documento que no aplica a CI compartido.
+- Crumb Jenkins requirio cookie de sesion: el runner conserva cookie y exige
+  resultado `SUCCESS` real.
+- Kafka usaba un directorio fuera del volumen: se fijo `KAFKA_LOG_DIRS` y se
+  comprobo persistencia tras recrear el broker.
+
+### Riesgos abiertos
+
+- PG-01 a PG-09 siguen `OPEN`: no existe opinion legal, PSP contratado, convenio
+  ESVAL, revision PCI/privacidad, plataforma productiva, DR ni pentest.
+- La maquina local y Kafka/PostgreSQL single-node no validan disponibilidad ni
+  2.000 TPS.
+- Los simuladores fake PSP/fake water biller se implementan en etapas 2 y 4.
+
+### Siguiente paso
+
+Iniciar etapa 2 en `nexopay-payments-platform` con monolito modular
+Kotlin/Spring, migraciones, idempotencia, maquina de estados, fake PSP, ledger y
+transactional outbox, consumiendo `contracts-v1-alpha.1`.
+
 ## 2026-07-16 - Etapa 1: toolchain y schemas comunes
 
 ### Decisiones

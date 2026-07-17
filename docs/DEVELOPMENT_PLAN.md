@@ -38,8 +38,8 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 
 | Etapa | Nombre | Estado | Dependencias | Estimacion |
 | --- | --- | --- | --- | --- |
-| 0 | Definicion de producto, regulacion y capacidad | IN_PROGRESS | Ninguna | 1-2 semanas |
-| 1 | Fundacion de ingenieria y contratos | IN_PROGRESS | Etapa 0 parcial | 2-3 semanas |
+| 0 | Definicion para Alpha y gates productivos | DONE | Ninguna | Completada 2026-07-16 |
+| 1 | Fundacion de ingenieria y contratos | DONE | Etapa 0 | Completada 2026-07-16 |
 | 2 | Nucleo transaccional | NOT_STARTED | Etapa 1 | 3-5 semanas |
 | 3 | Checkout vertical slice | NOT_STARTED | Etapa 2 | 4-6 semanas |
 | 4 | Facturacion e integraciones de empresas | NOT_STARTED | Etapas 1-3 | 3-6 semanas |
@@ -52,19 +52,20 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 Las etapas 4 y 5 pueden avanzar en paralelo despues de estabilizar los contratos
 y modelos de la etapa 2.
 
-## Etapa 0 - Definicion de producto, regulacion y capacidad
+## Etapa 0 - Definicion para Alpha y gates productivos
 
-Expediente activo: [Etapa 0 - Descubrimiento](discovery/PHASE_0_DISCOVERY.md).
+Expediente de cierre: [Etapa 0 - Descubrimiento](discovery/PHASE_0_DISCOVERY.md).
 
 ### Objetivo
 
-Eliminar ambiguedades que cambian el modelo financiero, legal o de seguridad.
+Eliminar ambiguedades para la Alpha sintetica y convertir toda validacion
+externa pendiente en un gate explicito que bloquee produccion.
 
 ### Trabajo
 
 - Elegir pais inicial, monedas y tipos de comercio/facturador.
 - Definir si NexoPay actua como gateway, agregador, subadquirente u otro rol.
-- Identificar adquirente/PSP inicial y proceso de certificacion.
+- Identificar candidatos a adquirente/PSP y gate de seleccion/certificacion.
 - Definir liquidacion, comisiones, devoluciones y responsabilidad por disputas.
 - Definir estrategia PCI, tokenizacion y alcance de datos personales.
 - Elegir proveedor de identidad y estrategia de usuarios B2B.
@@ -80,14 +81,17 @@ Eliminar ambiguedades que cambian el modelo financiero, legal o de seguridad.
 ### Criterios de salida
 
 - Alcance MVP aprobado y fuera de alcance explicito.
-- Rol regulatorio y estrategia PCI revisados por especialistas competentes.
-- Primer PSP y primer tipo de facturador identificados.
+- Rol funcional/PCI de Alpha acotado y revisiones externas registradas como
+  gates que impiden dinero o datos reales.
+- Fake PSP/facturador definidos y candidatos reales identificados sin afirmar
+  convenio inexistente.
 - Capacidad y SLO iniciales cuantificados.
-- ADR de identidad, cloud, tenancy y proveedores creados o calendarizados.
+- ADR de identidad, cloud, tenancy, datos y gates creados.
+- Threat model inicial con owners, hitos y revision calendarizada.
 
 ## Etapa 1 - Fundacion de ingenieria y contratos
 
-Ejecucion activa: [Etapa 1 - Fundacion](implementation/PHASE_1_FOUNDATION.md).
+Evidencia de cierre: [Etapa 1 - Fundacion](implementation/PHASE_1_FOUNDATION.md).
 
 ### Objetivo
 
@@ -101,7 +105,9 @@ calidad de la misma forma.
 - Crear AsyncAPI del ciclo de estados de pago.
 - Configurar lint y deteccion de breaking changes en contratos.
 - Acordar envelope de eventos, idempotencia y correlation IDs.
-- Crear entorno local con PostgreSQL, Kafka, Redis, fake PSP y fake biller.
+- Crear entorno local con PostgreSQL, Kafka, Redis, Keycloak y observabilidad.
+- Reservar contratos para fake PSP/fake biller; sus implementaciones pertenecen
+  a las etapas 2 y 4 para evitar servicios ficticios sin dominio consumidor.
 - Fijar toolchains, convenciones, estrategia de ramas y versionamiento.
 - Implementar Jenkins Shared Library minima o pipelines equivalentes probados.
 - Definir formato de logs, trazas, metricas y health checks.
@@ -116,7 +122,8 @@ para validar los contratos.
 - Contratos v1 pasan lint, ejemplos y pruebas de compatibilidad.
 - Entorno local arranca mediante un procedimiento documentado.
 - Al menos un pipeline real ejecuta lint, test y build de un proyecto minimo.
-- Productores y consumidores aceptan los contratos iniciales.
+- Baseline v1 es aceptada para iniciar productores/consumidores; cada
+  implementacion agrega contract tests contra esa baseline.
 
 ## Etapa 2 - Nucleo transaccional
 

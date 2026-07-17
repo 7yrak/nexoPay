@@ -2,11 +2,11 @@
 
 ## Estado
 
-- Estado: `IN_PROGRESS`.
+- Estado: `DONE` para Alpha interna sintetica.
 - Inicio: 2026-07-16.
-- Responsable de aprobacion: pendiente.
-- Objetivo: cerrar decisiones de producto, regulacion y capacidad antes de
-  implementar contratos transaccionales.
+- Cierre: 2026-07-16.
+- Responsable de aprobacion: product owner/architecture owner.
+- Limite: no autoriza produccion, datos personales, credenciales ni dinero real.
 
 Este documento contiene el estado vigente de las decisiones. La bitacora
 conserva su evolucion cronologica y los ADR formalizan decisiones aprobadas.
@@ -16,27 +16,32 @@ conserva su evolucion cronologica y los ADR formalizan decisiones aprobadas.
 - [Evaluacion del entorno local](LOCAL_ENVIRONMENT_ASSESSMENT.md)
 - [Notas regulatorias iniciales de Chile](CHILE_REGULATORY_NOTES.md)
 - [Notas del piloto ESVAL](ESVAL_PILOT_NOTES.md)
+- [Threat model inicial](THREAT_MODEL.md)
+- [Clasificacion y retencion Alpha](ALPHA_DATA_RETENTION.md)
+- [Gates obligatorios de produccion](PRODUCTION_GATES.md)
 - [Registros de decisiones](../adr/README.md)
 
 ## Regla de decision
 
-Una decision pasa por `OPEN`, `PROPOSED`, `VALIDATING` y `APPROVED`. Si falta
-evidencia externa o aprobacion competente, no puede marcarse como aprobada.
+Una decision pasa por `OPEN`, `PROPOSED`, `VALIDATING` y `APPROVED`. La
+aprobacion siempre declara su alcance. Las decisiones internas pueden quedar
+`APPROVED (ALPHA)` mientras la aprobacion externa correspondiente permanece
+`OPEN` como gate de produccion; ambas afirmaciones no son equivalentes.
 
 ## Tablero
 
 | ID | Decision | Estado | Propuesta inicial | Evidencia requerida |
 | --- | --- | --- | --- | --- |
 | D0.1 | Pais y moneda inicial | APPROVED | Chile y CLP; sin multimoneda en MVP | Confirmacion del propietario de producto |
-| D0.2 | Rol operativo/regulatorio | VALIDATING | Recaudador tecnologico sin custodia ni liquidacion | Opinion legal y contratos con PSP/comercio |
-| D0.3 | PSP/adquirente inicial | VALIDATING | Evaluar Webpay Plus y Khipu; mantener fake PSP | APIs, certificacion, costos, SLA y modelo multiempresa |
-| D0.4 | Facturador piloto | VALIDATING | ESVAL con adaptador simulado hasta obtener convenio | Sponsor, API/archivos, contrato y datos de prueba |
+| D0.2 | Rol funcional Alpha | APPROVED (ALPHA) | Recaudador tecnologico sin custodia ni liquidacion | PG-01 conserva la clasificacion legal pendiente |
+| D0.3 | Estrategia PSP | APPROVED (ALPHA) | Fake PSP; Webpay/Khipu solo candidatos | PG-02 bloquea proveedor real |
+| D0.4 | Estrategia facturador | APPROVED (ALPHA) | `fake-water-biller`; ESVAL como objetivo | PG-03 bloquea adaptador ESVAL |
 | D0.5 | Capacidad objetivo | APPROVED | 10M tx/dia, 2.000 TPS peak, prueba a 2x | Confirmacion del propietario de producto |
-| D0.6 | SLO y recuperacion | PROPOSED | Payments 99,95%; gestion 99,9% | Analisis de impacto y costo |
+| D0.6 | SLO y recuperacion | APPROVED (BASELINE) | Payments 99,95%; gestion 99,9% | PG-07 exige medicion/aprobacion productiva |
 | D0.7 | Plataforma de ejecucion | APPROVED | Desarrollo local; AWS se evalua al incorporar cliente | ADR y evaluacion tecnica local |
 | D0.8 | Identidad B2B | APPROVED | Keycloak para desarrollo; produccion se reevalua | ADR, MFA y prueba de organizaciones |
-| D0.9 | PCI y tokenizacion | VALIDATING | Captura alojada y tokenizacion PSP | Revision PCI/QSA o especialista |
-| D0.10 | Retencion y residencia | OPEN | Minimizar datos y separar auditoria | Requisitos legales y operacionales |
+| D0.9 | PCI y tokenizacion | APPROVED (ALPHA) | No aceptar datos de tarjeta; futura captura PSP | PG-04 exige revision profesional |
+| D0.10 | Retencion y residencia | APPROVED (ALPHA) | Solo sinteticos y volumenes descartables | PG-05 bloquea datos reales |
 
 `tx/dia` representa transacciones de pago, no todas las llamadas HTTP ni los
 eventos derivados. Esa distincion debe conservarse en capacidad y costos.
@@ -170,7 +175,7 @@ eventos, webhooks y escrituras de ledger.
 
 ## D0.6 - SLO, RTO y RPO
 
-### Propuesta para evaluacion
+### Baseline de ingenieria
 
 - Checkout API y Payment Core: 99,95% mensual, excluyendo proveedores externos.
 - Checkout Web: 99,95% mensual.
@@ -182,8 +187,8 @@ eventos, webhooks y escrituras de ledger.
   reconciliacion obligatoria de cualquier ventana.
 - Cero tolerancia a ledger duplicado o inconsistente.
 
-Estos valores son propuestas, no compromisos. Se aprobaran despues de comparar
-impacto comercial, arquitectura y costo.
+Estos valores se aceptan para orientar el diseno, no como SLA contractual. PG-07
+exige medirlos y aprobar su costo antes del candidato a piloto.
 
 ## D0.7 - Cloud y regiones
 
@@ -231,7 +236,7 @@ forzarse una cuenta si el negocio permite pago de deuda con identificador.
 
 ## D0.9 - PCI, privacidad y datos
 
-### Propuesta
+### Decision para Alpha
 
 - Checkout Web se aloja en dominio NexoPay.
 - El comercio integra redirect o iframe mediante Checkout SDK.
@@ -241,6 +246,16 @@ forzarse una cuenta si el negocio permite pago de deuda con identificador.
 
 El alcance final debe ser revisado por un profesional PCI competente y por
 asesoria legal de privacidad en la jurisdiccion elegida.
+
+## D0.10 - Retencion y residencia
+
+La Alpha usa solo datos sinteticos, plazos maximos locales y eliminacion de
+volumenes documentados en `ALPHA_DATA_RETENTION.md`. No existe migracion de datos
+locales a produccion.
+
+Los plazos, bases legales y residencia para datos reales no se presumen. Deben
+ser aprobados mediante PG-05 antes de cargar RUT, deuda, identidad o pagos de un
+cliente.
 
 ## Alcance habilitado para la Alpha local
 
@@ -263,8 +278,8 @@ asesoria legal de privacidad en la jurisdiccion elegida.
 - Produccion, alta disponibilidad y compromisos de SLA.
 - Acceso publico desde Internet salvo un tunel temporal controlado para demo.
 
-Este alcance permite comenzar la etapa 1 sin cerrar las validaciones requeridas
-antes de un piloto real.
+Este alcance permite cerrar la etapa 0 y ejecutar etapas de ingenieria
+sinteticas sin confundirlas con preparacion productiva.
 
 ## Mapa inicial de datos
 
@@ -281,22 +296,22 @@ antes de un piloto real.
 
 ## Criterios de cierre
 
-- [ ] Alcance MVP y fuera de alcance aprobados.
+- [x] Alcance MVP Alpha y fuera de alcance aprobados.
 - [x] Jurisdiccion y moneda documentadas.
 - [x] Flujo de fondos funcional documentado.
-- [ ] Rol regulatorio y estrategia PCI revisados externamente.
-- [ ] PSP y facturador iniciales identificados.
+- [x] Rol funcional y estrategia sin datos de tarjeta aprobados para Alpha.
+- [x] Fake PSP y `fake-water-biller` definidos; candidatos reales registrados.
 - [x] Capacidad objetivo cuantificada.
-- [ ] SLO, RTO y RPO aprobados.
+- [x] SLO, RTO y RPO aceptados como baseline no contractual.
 - [x] Plataforma local e identidad para Alpha decididas.
-- [ ] Produccion, tenancy y retencion decididos o con ADR calendarizado.
-- [ ] Threat model y mapa de datos revisados.
-- [ ] Riesgos residuales tienen responsable y fecha de revision.
+- [x] Tenancy y retencion Alpha decididos mediante ADR/documento.
+- [x] Threat model y mapa de datos revisados para Alpha.
+- [x] Riesgos residuales tienen owner por rol y proxima revision.
+- [x] Validaciones externas pendientes estan registradas como gates bloqueantes.
 
-## Primer bloque de respuestas requerido
+## Seguimiento externo
 
-1. Confirmar si existe contacto o convenio con ESVAL.
-2. Confirmar si ESVAL entregara deuda por archivo, API o ambos.
-3. Definir quien contrata Webpay/Khipu y es titular de cada credencial.
-4. Aprobar o ajustar la propuesta de SLO, RTO y RPO.
-5. Definir volumen de lanzamiento, separado del objetivo a tres anos.
+Las respuestas sobre convenio ESVAL, mecanismo de deuda, titularidad de
+credenciales, clasificacion legal, PCI y plataforma real permanecen abiertas en
+`PRODUCTION_GATES.md`. No bloquean la etapa 2 sintetica; si bloquean cualquier
+integracion o piloto real.

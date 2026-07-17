@@ -98,19 +98,22 @@ pull requests. No se usara `latest` en imagenes desplegables.
 
 - [Arquitectura](docs/ARCHITECTURE.md)
 - [Plan de desarrollo](docs/DEVELOPMENT_PLAN.md)
-- [Expediente activo de la etapa 0](docs/discovery/PHASE_0_DISCOVERY.md)
-- [Ejecucion activa de la etapa 1](docs/implementation/PHASE_1_FOUNDATION.md)
+- [Cierre de la etapa 0](docs/discovery/PHASE_0_DISCOVERY.md)
+- [Gates obligatorios antes de produccion](docs/discovery/PRODUCTION_GATES.md)
+- [Threat model inicial](docs/discovery/THREAT_MODEL.md)
+- [Fundacion completada de la etapa 1](docs/implementation/PHASE_1_FOUNDATION.md)
+- [Estandar de observabilidad](docs/engineering/OBSERVABILITY_STANDARD.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
 - [Decisiones de arquitectura](docs/adr/README.md)
 
 ## Estado actual
 
-La arquitectura inicial, los limites de repositorios y el plan de desarrollo
-por etapas estan definidos. Los repositorios de componentes contienen
-documentacion tecnica y pipelines base, pero aun no incluyen implementacion
-funcional.
+Las etapas 0 y 1 estan `DONE` para el alcance de Alpha interna sintetica. Existen
+contratos v1 versionados, deteccion de breaking changes, infraestructura local
+verificada, Jenkins real y estandar de observabilidad. La siguiente etapa es el
+nucleo transaccional.
 
-La etapa 0 continua abierta para validaciones previas a clientes reales. La
-etapa 1 ya esta en curso con contratos y entorno local basados exclusivamente en
-datos sinteticos.
+Esto no habilita produccion: legal, PCI, privacidad, PSP, convenio ESVAL, cloud,
+capacidad, recuperacion y pentest permanecen como gates abiertos. Hasta pasarlos
+se prohiben datos, credenciales y dinero real.
