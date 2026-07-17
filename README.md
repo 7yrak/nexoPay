@@ -105,6 +105,7 @@ pull requests. No se usara `latest` en imagenes desplegables.
 - [Nucleo transaccional completado de la etapa 2](docs/implementation/PHASE_2_TRANSACTIONAL_CORE.md)
 - [Checkout vertical slice completado de la etapa 3](docs/implementation/PHASE_3_CHECKOUT_VERTICAL_SLICE.md)
 - [Facturacion e integraciones completadas para Alpha en la etapa 4](docs/implementation/PHASE_4_BILLING_INTEGRATIONS.md)
+- [Plano de gestion completado para Alpha en la etapa 5](docs/implementation/PHASE_5_MANAGEMENT_PLANE.md)
 - [Estandar de observabilidad](docs/engineering/OBSERVABILITY_STANDARD.md)
 - [Catalogo y dependencias](docs/REPOSITORIES.md)
 - [Bitacora de desarrollo](docs/DEVELOPMENT_LOG.md)
@@ -112,13 +113,15 @@ pull requests. No se usara `latest` en imagenes desplegables.
 
 ## Estado actual
 
-Las etapas 0 a 4 estan `DONE` para el alcance interno sintetico.
+Las etapas 0 a 5 estan `DONE` para el alcance interno sintetico.
 Existen contratos v1 versionados, infraestructura local, Jenkins real, nucleo
 transaccional, Payment Portal, Checkout Web y SDK embebible. El recorrido deuda
 sintetica -> fake PSP -> ledger -> comprobante pasa en Chrome desktop/movil sin
 entregar bearer o secretos al parent. Billing Connectors consulta, valida y
-confirma deuda canonica con aislamiento por adaptador y auditoria durable. La
-siguiente etapa es el plano de gestion.
+confirma deuda canonica con aislamiento por adaptador y auditoria durable.
+Management Portal y API agregan OIDC real, RBAC backend, aislamiento tenant,
+configuracion y auditoria sin acceso a Payment Core. La siguiente etapa es
+eventos, webhooks y conciliacion.
 
 Esto no habilita produccion: legal, PCI, privacidad, PSP, convenio ESVAL, cloud,
 capacidad, recuperacion y pentest permanecen como gates abiertos. Hasta pasarlos

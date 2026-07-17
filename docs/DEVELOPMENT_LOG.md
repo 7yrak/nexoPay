@@ -3,6 +3,56 @@
 Esta bitacora conserva contexto entre sesiones. Cada entrada debe indicar
 decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
+## 2026-07-17 - Cierre interno de etapa 5
+
+### Decisiones
+
+- Management API posee PostgreSQL propio y no accede a la base financiera.
+- Keycloak firma `tenant_id` y roles; el backend vuelve a validar tenancy y
+  RBAC, sin confiar en permisos visuales del portal.
+- El portal usa Authorization Code con PKCE y BFF; el bearer permanece en una
+  cookie `HttpOnly` y no llega a JavaScript.
+- Referencias de secretos, no secretos, requieren autenticacion reciente y
+  confirmacion explicita.
+- Las proyecciones sinteticas permiten cerrar lectura/exportacion de Etapa 5;
+  su ingesta idempotente por Kafka pertenece a Etapa 6.
+
+### Trabajo completado
+
+- `contracts-v1-alpha.5` agrega tenants, comercios, sucursales, usuarios,
+  checkout, webhooks, referencias de secretos, auditoria y pagos proyectados.
+- Management API implementa OIDC, RBAC, tenancy, CRUD acotado, step-up,
+  auditoria append-only y CSV limitado.
+- Management Portal implementa login Keycloak real, BFF same-origin y estados
+  editables, solo lectura, vacios y errores.
+- Compose agrega realm importable, tres roles/usuarios sinteticos, base de
+  gestion, API, portal, healthchecks y dos pipelines Jenkins.
+
+### Validaciones
+
+- Contracts: 38 schemas, 20 ejemplos y 20 pruebas, sin breaking changes.
+- API: cinco pruebas de politica y build Gradle/JAR exitoso.
+- Portal: cuatro pruebas BFF, lint, TypeScript y build Next exitosos.
+- Playwright: cuatro casos Chrome escritorio/movil con OIDC real; admin y
+  viewer validan tenant cruzado `404`, RBAC `403` y step-up `428`.
+- PostgreSQL rechaza alteracion de auditoria y conserva proyecciones separadas
+  por tenant; logs no contienen claves ni referencia de secret manager.
+- Commits: Contracts `b2c603f`, API `eb9dd75`, Portal `ebf5b0c`, Event Workers
+  `243068a` e infraestructura `6bb218d`.
+- Jenkins Management API #1 y Management Portal #2 terminaron `SUCCESS`.
+
+### Riesgos abiertos
+
+- Keycloak y secretos son solo locales; `PG-05` y `PG-06` bloquean datos reales.
+- Provisionamiento empresarial y secret manager administrado no estan cerrados.
+- Inbox, webhooks durables, conciliacion e ingesta de proyecciones pasan a
+  Etapa 6.
+
+### Siguiente paso
+
+Iniciar Etapa 6 con eventos idempotentes, webhooks firmados, conciliacion,
+alertas y runbooks.
+
 ## 2026-07-17 - Cierre interno de etapa 4
 
 ### Decisiones

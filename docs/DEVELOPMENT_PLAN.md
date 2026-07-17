@@ -43,7 +43,7 @@ Estados permitidos: `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED` y `DONE`.
 | 2 | Nucleo transaccional | DONE | Etapa 1 | Completada 2026-07-17 |
 | 3 | Checkout vertical slice | DONE | Etapa 2 | Completada 2026-07-17 |
 | 4 | Facturacion e integraciones de empresas | DONE | Etapas 1-3 | Alpha sintetica completada 2026-07-17; sandbox real diferido PG-03 |
-| 5 | Plano de gestion | NOT_STARTED | Etapas 1-2 | 4-6 semanas |
+| 5 | Plano de gestion | DONE | Etapas 1-2 | Alpha sintetica completada 2026-07-17 |
 | 6 | Eventos, webhooks y conciliacion | NOT_STARTED | Etapas 2, 4 y 5 | 3-5 semanas |
 | 7 | PSP real, cumplimiento y seguridad | NOT_STARTED | Etapas 3 y 6 | 4-8 semanas |
 | 8 | Escala, resiliencia y recuperacion | NOT_STARTED | Etapa 7 | 3-5 semanas |
@@ -226,6 +226,8 @@ modelos particulares de cada empresa.
 - Confirmacion de deuda es idempotente y auditable.
 
 ## Etapa 5 - Plano de gestion
+
+Evidencia de cierre: [Etapa 5 - Plano de gestion](implementation/PHASE_5_MANAGEMENT_PLANE.md).
 
 ### Objetivo
 
