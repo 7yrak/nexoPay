@@ -33,6 +33,7 @@ decisiones, trabajo terminado, riesgos conocidos y siguiente paso verificable.
 
 - `nexopay-contracts` commits `0c61eb2`, `7d0b24a` y `99c26bd` publicados.
 - Tag `contracts-v1-alpha.1` publicado.
+- Cierre documental de `nexoPay` publicado en commit `436d12b`.
 - 13 pruebas, lint OpenAPI/AsyncAPI y compatibilidad pasan localmente.
 - `nexopay-platform-infrastructure` commit `cf1e814` publicado.
 - Hardening de persistencia/logs publicado en commit `c35e4cc`.
